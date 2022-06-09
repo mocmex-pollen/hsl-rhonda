@@ -1,4 +1,4 @@
-:: %say the product of the check arm of /lib/rhonda/hoon
+::  %say the product of the check arm of /lib/rhonda/hoon
 ::
 /+  *rhonda
 ::
