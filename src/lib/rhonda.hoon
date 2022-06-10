@@ -13,7 +13,11 @@
 ++  check
   |=  [b=@ud n=@ud]
   ^-  ?
+  ~_  leaf+"base b must be >= 2"
   ?>  (gte b 2)
+  ~_  leaf+"candidate number n must be >= 2"
+  ?>  (gte n 2)
+  ::
   .=  (roll (base-digits b n) mul)
   %+  mul
     b
@@ -25,8 +29,10 @@
 ++  series
   |=  [b=@ud n=@ud]
   ^-  (list @ud)
+  ~_  leaf+"base b must be >= 2"
   ?>  (gte b 2)
-  ?:  =((lent (prime-factors b)) 1)
+  ::
+  ?:  =((prime-factors b) ~[b])
     ~
   =/  candidate=@ud  2
   =+  rhondas=*(list @ud)
@@ -45,7 +51,7 @@
 ::  produce a list of the digits of n represented in base b
 ::
 ::    This arm has two behaviors which may be at first surprising, but do not
-::    matter for the purposes of the check and series arms, and allow for
+::    matter for the purposes of the ++check and ++series arms, and allow for
 ::    some simplifications to its implementation.
 ::    - crashes on n=0
 ::    - orders the list of digits with least significant digits first
@@ -55,6 +61,7 @@
 ++  base-digits
   |=  [b=@ud n=@ud]
   ^-  (list @ud)
+  ?>  (gte b 2)
   ::  without this guard (base-digits b 0) would produce ~
   ::
   ?<  =(n 0)
@@ -68,8 +75,6 @@
 ::    n must be >= 2
 ::    if n is prime, produce ~[n]
 ::    ex: (prime-factors 10.206) produces ~[7 3 3 3 3 3 3 2]
-::
-::    TODO: can this be made tail-recursive? clearer?
 ::
 ++  prime-factors
   |=  [n=@ud]
