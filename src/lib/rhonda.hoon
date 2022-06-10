@@ -89,10 +89,10 @@
   =^  candidate  wheel  (next:wheel)
   ?.  (lte (mul candidate candidate) n)
     ?:((gth n 1) [n factors] factors)
-  ::  repeat the prime factor as many times as possible
-  ::
   |-
   ?:  =((mod n candidate) 0)
+    ::  repeat the prime factor as many times as possible
+    ::
     $(factors [candidate factors], n (div n candidate))
   ^$
 ::  +new-wheel: a door for generating numbers that may be prime
