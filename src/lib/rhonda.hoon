@@ -13,6 +13,7 @@
 ++  check
   |=  [b=@ud n=@ud]
   ^-  ?
+  ?>  (gte b 2)
   .=  (roll (base-digits b n) mul)
   %+  mul
     b
@@ -24,7 +25,18 @@
 ++  series
   |=  [b=@ud n=@ud]
   ^-  (list @ud)
-  !!
+  ?>  (gte b 2)
+  ?:  .=((lent (prime-factors b)) 1)
+    ~
+  =/  candidate=@ud  2
+  =+  rhondas=*(list @ud)
+  |-
+  ?:  .=(n 0)
+    (flop rhondas)
+  ?:  (check b candidate)
+    $(rhondas [candidate rhondas], n (dec n), candidate +(candidate))
+  $(candidate +(candidate))
+
 --
 ::
 |%
@@ -44,7 +56,7 @@
 ++  base-digits
   |=  [b=@ud n=@ud]
   ^-  (list @ud)
-  :: without this guard (base-digits b 0) would produce the empty list
+  ::  without this guard (base-digits b 0) would produce ~
   ::
   ?<  .=(n 0)
   |-
@@ -53,9 +65,24 @@
   :-  (mod n b)
   $(n (div n b))
 ::  produce a list of the prime factors of n
+::    
+::    n must be >= 2
+::    if n is prime, produces ~[n]
+::    ex: (prime-factors 10.206) produces ~[7 3 3 3 3 3 3 2]
+::
+::    TODO: can this be made tail-recursive? clearer?
 ::
 ++  prime-factors
   |=  [n=@ud]
   ^-  (list @ud)
-  ~[2 3 3 3 3 3 3 7]
+  ?>  (gte n 2)
+  =/  candidate=@ud  2
+  =+  factors=*(list @ud)
+  |-
+  ?.  (lte (mul candidate candidate) n)
+    ?:((gth n 1) [n factors] factors)
+  |-
+  ?:  .=((mod n candidate) 0)
+    $(factors [candidate factors], n (div n candidate))
+  ^$(candidate +(candidate))
 --
