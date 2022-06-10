@@ -36,7 +36,6 @@
   ?:  (check b candidate)
     $(rhondas [candidate rhondas], n (dec n), candidate +(candidate))
   $(candidate +(candidate))
-
 --
 ::
 |%
@@ -49,9 +48,6 @@
 ::    - orders the list of digits with least significant digits first
 ::
 ::    ex: (base-digits 4 10.206) produces ~[2 3 1 3 3 1 2]
-::
-::    TODO: will using +dvr instead of +div and +mod cause any noticable
-::    speeup to either +check or +series?
 ::
 ++  base-digits
   |=  [b=@ud n=@ud]
@@ -67,7 +63,7 @@
 ::  produce a list of the prime factors of n
 ::    
 ::    n must be >= 2
-::    if n is prime, produces ~[n]
+::    if n is prime, produce ~[n]
 ::    ex: (prime-factors 10.206) produces ~[7 3 3 3 3 3 3 2]
 ::
 ::    TODO: can this be made tail-recursive? clearer?
