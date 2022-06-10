@@ -26,16 +26,19 @@
   |=  [b=@ud n=@ud]
   ^-  (list @ud)
   ?>  (gte b 2)
-  ?:  .=((lent (prime-factors b)) 1)
+  ?:  =((lent (prime-factors b)) 1)
     ~
   =/  candidate=@ud  2
   =+  rhondas=*(list @ud)
   |-
-  ?:  .=(n 0)
+  ?:  =(n 0)
     (flop rhondas)
-  ?:  (check b candidate)
-    $(rhondas [candidate rhondas], n (dec n), candidate +(candidate))
-  $(candidate +(candidate))
+  =/  is-rhonda=?  (check b candidate)
+  %=  $
+    rhondas    ?:(is-rhonda [candidate rhondas] rhondas)
+    n          ?:(is-rhonda (dec n) n)
+    candidate  +(candidate)
+  ==
 --
 ::
 |%
@@ -54,9 +57,9 @@
   ^-  (list @ud)
   ::  without this guard (base-digits b 0) would produce ~
   ::
-  ?<  .=(n 0)
+  ?<  =(n 0)
   |-
-  ?:  .=(n 0)
+  ?:  =(n 0)
     ~
   :-  (mod n b)
   $(n (div n b))
@@ -78,7 +81,7 @@
   ?.  (lte (mul candidate candidate) n)
     ?:((gth n 1) [n factors] factors)
   |-
-  ?:  .=((mod n candidate) 0)
+  ?:  =((mod n candidate) 0)
     $(factors [candidate factors], n (div n candidate))
   ^$(candidate +(candidate))
 --
